@@ -21,7 +21,7 @@ func NewEnq(address, qName string) (*Enq, error) {
 	}
 	q, err := ch.QueueDeclare(
 		qName,
-		false,
+		true,
 		false,
 		false,
 		false,

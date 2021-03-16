@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 
 	"github.com/knry0329/gomque/que"
@@ -32,7 +33,7 @@ func main() {
 	if connection == "" {
 		connection = "amqp://" + user + ":" + password + "@" + host + ":" + port + "/" + vhost
 	}
-	if isDeq {
+	if !isDeq {
 		enqExec(connection, qName, msg)
 	} else {
 		// deqExec(connection, qName, msg)
@@ -45,7 +46,9 @@ func enqExec(connection, qName, msg string) {
 		log.Fatalf("connect error. %v", err)
 	}
 	defer enq.Close()
-	enq.Enqueue([]byte(msg))
+	if err := enq.Enqueue([]byte(msg)); err != nil {
+		fmt.Println(err)
+	}
 
 }
 
